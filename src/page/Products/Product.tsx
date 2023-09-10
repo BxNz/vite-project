@@ -3,16 +3,105 @@ import ProductTb from "./ProductTB.tsx";
 import CreateProductDialog from "./ProductDialog.tsx";
 import EditProductDialog from "./ProductDialog.tsx";
 import "../../styles/Product/Product.css";
-import { useState } from "react";
-
+import ProductService from "../../services/ProductService.tsx";
+import { useEffect, useState } from "react";
 
 type Props = {};
 
 const Product = ({}: Props) => {
+  useEffect(() => {
+    try {
+      const getProducts = async () => {
+        const Productder = await ProductService.getProducts();
+        if (Productder.status === 200) {
+          setproductList(Productder.data);
+          // console.log(Productder);
+        }
+      };
+
+      getProducts();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  const [productList, setproductList] = useState<any[]>([]);
+
+  const [Productdata, setProductdata] = useState<any>({});
+
+  const handlechange = (e: any) => {
+    setProductdata({ ...Productdata, [e.target.name]: e.target.value });
+  };
+
+  const createProduct = async () => {
+    try {
+      const Product = await ProductService.createProducts(Productdata);
+      // console.log(Product);
+      if (Product.status === 200) {
+        let newProductlist = [...productList];
+        newProductlist.push(Product.data);
+        setproductList(newProductlist);
+        // setProductdata=({});
+        setOpenCreateProductDialog(false);
+      } else {
+        console.log(Product);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleditProduct = async () => {
+    try {
+      const Product = await ProductService.updateProducts(
+        EditProductid,
+        Productdata
+      );
+      if(Product.status === 200){
+        let newProductlist=[...productList];
+        let index = newProductlist.findIndex(
+          (Product) => Product._id === EditProductid
+        );
+        newProductlist[index] = Product.data;
+        setproductList(newProductlist);
+        setProductdata({});
+        setEditProductid("")
+        setOpenEditProductDialog(false);
+      }else{
+        console.log(Product);
+      }
+     
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const deleteProduct = async (id: string)=>{
+    try {
+      const Product =await ProductService.deleteProducts(id)
+    
+    if(Product.status === 200){
+      let newProductlist=[...productList];
+      let index = newProductlist.findIndex(
+        (Product) => Product._id === EditProductid
+      );
+      newProductlist.splice(index,1);
+      setproductList(newProductlist);
+      
+      
+    }else{
+      console.log(Product);
+    }
+
+    } catch (error) {
+      console.log(error)
+
+    }
+  }
+
+  const [EditProductid, setEditProductid] = useState<string>("");
   const [OpenCreateProductDialog, setOpenCreateProductDialog] =
     useState<boolean>(false);
 
-    const [OpenEditProductDialog, setOpenEditProductDialog] =
+  const [OpenEditProductDialog, setOpenEditProductDialog] =
     useState<boolean>(false);
 
   const handleOpenCreateProductDialog = () => {
@@ -22,9 +111,12 @@ const Product = ({}: Props) => {
     setOpenCreateProductDialog(false);
   };
 
-  const handleOpenEditProductDialog = () => {
+  const handleOpenEditProductDialog = (id: string, data:any) => {
+    setEditProductid(id);
+    setProductdata(data);
     setOpenEditProductDialog(true);
   };
+
   const handleCloseEditProductDialog = () => {
     setOpenEditProductDialog(false);
   };
@@ -58,19 +150,30 @@ const Product = ({}: Props) => {
       </Box>
       <Box border={1} borderColor="gray" padding={2} borderRadius={2}>
         <Typography variant="body1">Product List</Typography>
-        <ProductTb 
+        <ProductTb
           onEdit={handleOpenEditProductDialog}
+          datalist={productList}
+          onDelete={deleteProduct}
         />
       </Box>
       <CreateProductDialog
         open={OpenCreateProductDialog}
         title="Create Product"
+        buttontext="Create"
         onClose={handleCloseCreateProductDialog}
+        handleonchage={handlechange}
+        handleclick={createProduct}
+        data={Productdata}
       />
       <EditProductDialog
-       open={OpenEditProductDialog}
-       title="Edit Product"
-       onClose={handleCloseEditProductDialog}/>
+        open={OpenEditProductDialog}
+        title="Edit Product"
+        buttontext="Edit"
+        onClose={handleCloseEditProductDialog}
+        handleonchage={handlechange}
+        handleclick={handleditProduct}
+        data={Productdata}
+      />
     </Container>
   );
 };

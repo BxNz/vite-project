@@ -10,6 +10,10 @@ type Props = {
   open: boolean;
   title: string;
   onClose: () => void;
+  handleonchage: (e: any) => void;
+  handleclick: () => void;
+  buttontext : string;
+  data :any;
 };
 
 function ProductDialog(props: Props) {
@@ -21,38 +25,50 @@ function ProductDialog(props: Props) {
           autoFocus
           margin="dense"
           id="barcode"
-          label="Barcode"
+          name="barcode"
+          label="barcode"
           type="text"
           fullWidth
+          value={props.data.barcode || ""}
+          onChange={props.handleonchage}
         ></TextField>
         <TextField
           autoFocus
           margin="dense"
-          id="Name"
-          label="Name"
+          id="name"
+          name="name"
+          label="name"
           type="text"
           fullWidth
+          value={props.data.name || ""}
+          onChange={props.handleonchage}
         ></TextField>
         <TextField
           autoFocus
           margin="dense"
-          id="QTY"
-          label="QTY"
+          id="qty"
+          name="qty"
+          label="qty"
           type="text"
           fullWidth
+          value={props.data.qty || ""}
+          onChange={props.handleonchage}
         ></TextField>
         <TextField
           autoFocus
           margin="dense"
-          id="Price"
-          label="Price"
+          id="price"
+          name="price"
+          label="price"
           type="text"
           fullWidth
+          value={props.data.price || ""}
+          onChange={props.handleonchage}
         ></TextField>
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" color="primary">
-          Craete
+        <Button variant="contained" color="primary" onClick={props.handleclick}>
+          {/* buttontext:{props} */}
         </Button>
         <Button variant="contained" color="secondary" onClick={props.onClose}>
           Cancle

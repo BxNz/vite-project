@@ -14,7 +14,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 type Props = {
-  onEdit: () => void;
+  onEdit: (id: string, data:any) => void;
+  datalist: any[];
+  onDelete:(id:string) => void;
 };
 
 const ProductTB = (props: Props) => {
@@ -38,22 +40,22 @@ const ProductTB = (props: Props) => {
     },
   }));
 
-  const rows = [
-    {
-      id: 1,
-      barcode: "12355",
-      name: "Pen",
-      qty: 10,
-      price: 5000,
-    },
-    {
-      id: 2,
-      barcode: "12354",
-      name: "Pencil",
-      qty: 10,
-      price: 5000,
-    },
-  ];
+  // const rows = [
+  //   {
+  //     id: 1,
+  //     barcode: "12355",
+  //     name: "Pen",
+  //     qty: 10,
+  //     price: 5000,
+  //   },
+  //   {
+  //     id: 2,
+  //     barcode: "12354",
+  //     name: "Pencil",
+  //     qty: 10,
+  //     price: 5000,
+  //   },
+  // ];
   return (
     <TableContainer component={Paper}>
       <Table sx={{ maxWidth: "lg" }}>
@@ -68,13 +70,9 @@ const ProductTB = (props: Props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
-            <StyledTableRow key={row.id}>
-              <StyledTableCell
-                component="th"
-                scope="row"
-                
-              >
+          {props.datalist.map((row, index) => (
+            <StyledTableRow key={row._id}>
+              <StyledTableCell component="th" scope="row">
                 {index + 1}
               </StyledTableCell>
               <StyledTableCell align="center">{row.barcode}</StyledTableCell>
@@ -82,10 +80,13 @@ const ProductTB = (props: Props) => {
               <StyledTableCell align="center">{row.qty}</StyledTableCell>
               <StyledTableCell align="center">{row.price}</StyledTableCell>
               <StyledTableCell align="center">
-                <IconButton aria-label="Edit" onClick={props.onEdit}>
+                <IconButton
+                  aria-label="Edit"
+                  onClick={() => props.onEdit(row._id, row)}
+                >
                   <EditIcon />
                 </IconButton>
-                <IconButton aria-label="delete">
+                <IconButton aria-label="delete"  onClick={() => props.onDelete(row._id)}>
                   <DeleteIcon />
                 </IconButton>
               </StyledTableCell>
