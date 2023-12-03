@@ -5,9 +5,19 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Image from "../assets/IMG_20230610_215031.jpg"
+import Image from "../assets/download.png"
 
-export default function Productcard() {
+type Props = {
+  _id: string,
+  barcode:string;
+  name:string;
+  qty : number;
+  price : number;
+
+  HandleAddproductSale : (id : string, barcode : string, qty : number, price : number) => void;
+}
+
+export default function Productcard( Props : Props) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -17,14 +27,14 @@ export default function Productcard() {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Water
+          {Props.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           10.000 LAK
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">ADD</Button>
+        <Button size="small" onClick={() => Props.HandleAddproductSale(Props._id,Props.barcode,Props.qty,Props.price)}>ADD</Button>
      
       </CardActions>
     </Card>

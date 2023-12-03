@@ -4,19 +4,19 @@ const API_URL = import.meta.env.VITE_API_URL;
 class UserService{
 
   getUser(): Promise<AxiosResponse> {
-    return axios.get(`${API_URL}/User`);
+    return axios.get(`${API_URL}/user`);
   }
   getUserByid(id: string): Promise<AxiosResponse> {
-    return axios.get(`${API_URL}/User/${id}`);
+    return axios.get(`${API_URL}/user/${id}`);
   }
   createUser(User: any): Promise<AxiosResponse> {
-    return axios.get(`${API_URL}/User/`, User);
+    return axios.get(`${API_URL}/user/`, User);
   }
   updateUser(id: string, User: any): Promise<AxiosResponse> {
-    return axios.put(`${API_URL}/User/${id}`, User);
+    return axios.put(`${API_URL}/user/${id}`, User);
   }
   deleteUser(id: string): Promise<AxiosResponse> {
-    return axios.delete(`${API_URL}/User/${id}`);
+    return axios.delete(`${API_URL}/user/${id}`);
   }
 
 }

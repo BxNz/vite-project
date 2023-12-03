@@ -8,13 +8,13 @@ import { useEffect, useState } from "react";
 
 type Props = {};
 
-const Product = ({}: Props) => {
+const product = ({}: Props) => {
   useEffect(() => {
     try {
       const getProducts = async () => {
-        const Productder = await ProductService.getProducts();
-        if (Productder.status === 200) {
-          setproductList(Productder.data);
+        const Productder = await ProductService.getAllProducts();
+        if (Productder.data.success) {
+          setproductList(Productder.data.data);
           // console.log(Productder);
         }
       };
@@ -39,9 +39,8 @@ const Product = ({}: Props) => {
       // console.log(Product);
       if (Product.status === 200) {
         let newProductlist = [...productList];
-        newProductlist.push(Product.data);
+        newProductlist.push(Product.data.data);
         setproductList(newProductlist);
-        // setProductdata=({});
         setOpenCreateProductDialog(false);
       } else {
         console.log(Product);
@@ -61,7 +60,7 @@ const Product = ({}: Props) => {
         let index = newProductlist.findIndex(
           (Product) => Product._id === EditProductid
         );
-        newProductlist[index] = Product.data;
+        newProductlist[index] = Product.data.data;
         setproductList(newProductlist);
         setProductdata({});
         setEditProductid("")
@@ -178,4 +177,4 @@ const Product = ({}: Props) => {
   );
 };
 
-export default Product;
+export default product;

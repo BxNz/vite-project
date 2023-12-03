@@ -14,6 +14,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
 type Props = {
+  onEdit: () => void;
   Userlist: any[];
 };
 
@@ -77,7 +78,7 @@ function UserTb(this: any,props: Props) {
               <StyledTableCell align="center">{row.Address}</StyledTableCell>
               {/* <StyledTableCell align="center">{row.price}</StyledTableCell> */}
               <StyledTableCell align="center">
-                <IconButton aria-label="Edit">
+                <IconButton aria-label="edit" onClick={props.onEdit}>
                   <EditIcon />
                 </IconButton>
                 <IconButton aria-label="delete">

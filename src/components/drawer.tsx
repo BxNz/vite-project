@@ -5,25 +5,31 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import PrintIcon from "@mui/icons-material/Print";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import AddBusinessIcon from '@mui/icons-material/AddBusiness';
+import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import { useNavigate } from "react-router-dom";
 
-type Props = {};
+type Props = {
+  setIsAuth: (isAuth: boolean) => void;
+};
 const ListIcon = [
   { path: "/", icon: <HomeIcon /> },
   { path: "/Product", icon: <AddBusinessIcon /> },
   { path: "/user", icon: <ManageAccountsIcon /> },
   { path: "/Sale", icon: <PointOfSaleIcon /> },
   { path: "/Report", icon: <PrintIcon /> },
-  { path: "/Logout", icon: <LogoutIcon /> },
 ];
 // const drawerWidth = 70;
 
-const drawer = ({}: Props) => {
+const drawer = (props: Props) => {
   const navigate = useNavigate();
 
   const handleNavigate = (path: string) => {
     navigate(path);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    props.setIsAuth(false);
   };
   return (
     <Drawer variant="permanent">
@@ -31,12 +37,12 @@ const drawer = ({}: Props) => {
         {ListIcon.map((icon, index) => (
           <ListItem key={index} disablePadding sx={{ display: "block" }}>
             <ListItemButton
-              onClick={() => handleNavigate(icon.path)}
               sx={{
                 minHeight: 60,
                 justifyContent: "center",
                 px: 2.5,
               }}
+              onClick={() => handleNavigate(icon.path)}
             >
               {icon.icon}
 
@@ -44,6 +50,18 @@ const drawer = ({}: Props) => {
             </ListItemButton>
           </ListItem>
         ))}
+        <ListItem disablePadding sx={{ display: "block" }}>
+          <ListItemButton
+            sx={{
+              minHeight: 60,
+              justifyContent: "center",
+              px: 2.5,
+            }}
+            onAbort={handleLogout}
+          >
+            <LogoutIcon />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Drawer>
   );
