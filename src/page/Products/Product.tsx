@@ -15,7 +15,6 @@ const product = ({}: Props) => {
         const Productder = await ProductService.getAllProducts();
         if (Productder.data.success) {
           setproductList(Productder.data.data);
-          // console.log(Productder);
         }
       };
 
